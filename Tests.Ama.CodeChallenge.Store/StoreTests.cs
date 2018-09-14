@@ -1,10 +1,5 @@
 ﻿using Ama.CodeChallenge.Store;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tests.Ama.CodeChallenge.Store
 {
@@ -14,7 +9,6 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void AddItemToCart()
 		{
-			var catalog = new Catalog();
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
 			store.AddItemToShoppingCart("Test", 1, 10);
@@ -24,7 +18,6 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void CheckoutCart_NoOverweight()
 		{
-			var catalog = new Catalog();
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
 			store.AddItemToShoppingCart("Test", 1, 10);
@@ -35,7 +28,6 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void CheckoutCart_Overweight()
 		{
-			var catalog = new Catalog();
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
 			store.AddItemToShoppingCart("Test", 1, 10);
