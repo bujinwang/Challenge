@@ -1,4 +1,6 @@
 ﻿using Ama.CodeChallenge.Store;
+using Ama.CodeChallenge.Store.Product.Camping;
+using Ama.CodeChallenge.Store.Store;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.Ama.CodeChallenge.Store

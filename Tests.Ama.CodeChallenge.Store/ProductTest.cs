@@ -1,6 +1,8 @@
 ﻿using Ama.CodeChallenge.Store;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Ama.CodeChallenge.Store.Product.Camping;
+using Ama.CodeChallenge.Store.Product.Food;
 
 namespace Tests.Ama.CodeChallenge.Store
 {
@@ -20,7 +22,7 @@ namespace Tests.Ama.CodeChallenge.Store
 		
 
 		[TestMethod]
-		public void GetDescriptionofTrailMix()
+		public void GetDescriptionOfTrailMix()
 		{
 			var trailMix = new TrailMix(0);
 			trailMix.Name = "Han-D Pack Trail Mix";

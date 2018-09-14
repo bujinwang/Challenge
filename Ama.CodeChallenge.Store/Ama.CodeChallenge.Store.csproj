@@ -35,11 +35,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Catalog.cs" />
-    <Compile Include="IStore.cs" />
-    <Compile Include="Product.cs" />
-    <Compile Include="Store.cs" />
+    <Compile Include="Product\Camping\Backpack.cs" />
+    <Compile Include="Store\Catalog.cs" />
+    <Compile Include="Product\Food\Coffee.cs" />
+    <Compile Include="Product\Food\DehydratedMeal.cs" />
+    <Compile Include="Product\Food\FoodBase.cs" />
+    <Compile Include="Product\Food\GranolaBar.cs" />
+    <Compile Include="Store\ICatalog.cs" />
+    <Compile Include="Product\ProductBase.cs" />
+    <Compile Include="Product\Camping\SleepingBag.cs" />
+    <Compile Include="ShoppingCart\ShoppingCart.cs" />
+    <Compile Include="ShoppingCart\ShoppingCartItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Product\Camping\Stove.cs" />
+    <Compile Include="Product\Camping\Tent.cs" />
+    <Compile Include="Product\Food\TrailMix.cs" />
+    <Compile Include="Store\IStore.cs" />
+    <Compile Include="Store\OnlineStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
