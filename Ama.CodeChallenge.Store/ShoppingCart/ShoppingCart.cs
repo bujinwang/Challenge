@@ -12,11 +12,14 @@ namespace Ama.CodeChallenge.Store.ShoppingCart
         public string CustomerName { get; set; }
         public List<ShoppingCartItem> Items { get; set; }
         public decimal SubTotal { get; set; }
-        public int ShippingFees { get; set; }
+        public decimal ShippingFees { get; set; }
 
         public decimal Total
         {
-            get { return SubTotal + ShippingFees; }
+            get => SubTotal + ShippingFees;
+            set => throw new System.NotImplementedException();
         }
+
+        public decimal Discounts { get; set; }
     }
 }
