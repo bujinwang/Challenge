@@ -12,7 +12,7 @@ namespace Ama.CodeChallenge.Store.Product
         /// <summary>
         /// I would like to retire using the int ID as the product type
         /// </summary>
-        
+
         public int Id
         {
             get => _id;
@@ -88,7 +88,7 @@ namespace Ama.CodeChallenge.Store.Product
         {
             lock (_inventoryLock)
             {
-                _inventory = _inventory + count;
+                _inventory = _inventory + Math.Abs(count);
             }
         }
 
@@ -96,13 +96,22 @@ namespace Ama.CodeChallenge.Store.Product
         {
             lock (_inventoryLock)
             {
-                _inventory = _inventory - count;
+                if (_inventory < Math.Abs(count))
+                {
+                    throw new ArgumentException(
+                        $"Not enough inventory to remove, has {_inventory}, but to remove {count}", nameof(count));
+                }
+
+                _inventory = _inventory - Math.Abs(count);
             }
         }
 
         public int GetInventory()
         {
-            return _inventory;
+            lock (_inventoryLock)
+            {
+                return _inventory;
+            }
         }
     }
 }

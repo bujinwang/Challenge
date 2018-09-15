@@ -13,7 +13,7 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void GetProductById()		
 		{
-			var catalog = new Catalog();
+			var catalog = new Inventory();
 			var product = catalog.GetProductByType(ProductTypeEnum.Tent);
 			Assert.IsNotNull(product);
 			Assert.AreEqual(1, product.Id);
@@ -25,7 +25,7 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void UpdateProductInventory()
 		{
-			var catalog = new Catalog();
+			var catalog = new Inventory();
 			var product = catalog.GetProductByType(ProductTypeEnum.Tent);
 			Assert.AreEqual(9, product.GetInventory());
 			catalog.ModifyProductInventory(ProductTypeEnum.Tent, 80);
