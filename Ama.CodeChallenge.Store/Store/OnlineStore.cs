@@ -12,11 +12,11 @@ namespace Ama.CodeChallenge.Store.Store
         protected internal const double FiveTentsDiscountAmount = 0.85D;
         protected internal const int ShippingChargeThreshHold = 200;
         protected internal const int OverWeightThreadHold = 10;
+        protected internal const int DefaultShippingCharge = 20;
 
         // can be readonly as it's initialized inside constructor
         private readonly IInventory _inventory;
         private List<ShoppingCart.ShoppingCart> _carts;
-        protected internal const int DefaultShippingCharge = 20;
 
         public OnlineStore(IInventory inventory)
         {
@@ -30,10 +30,7 @@ namespace Ama.CodeChallenge.Store.Store
 
             var shoppingCartItem = GetCustomerShoppingCartItem(productType, cart);
 
-            if (shoppingCartItem == null)
-            {
-                shoppingCartItem = CreateCustomerShoppingCartItem(productType, cart);
-            }
+            shoppingCartItem = shoppingCartItem ?? CreateCustomerShoppingCartItem(productType, cart);
 
             var product = _inventory.GetProductByType(productType);
             shoppingCartItem.Count += count;
