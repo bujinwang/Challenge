@@ -27,7 +27,7 @@ namespace Tests.Ama.CodeChallenge.Store
 		    Assert.AreEqual(true, trailMix.ContainsAllergens);
 			Assert.AreEqual(false, trailMix.RequiresCooking);
 			Assert.AreEqual("Han-D Pack Trail Mix" + Environment.NewLine +
-				"Contains Allergens: False" + Environment.NewLine +
+				"Contains Allergens: True" + Environment.NewLine +
 				"Requires Cooking: False" + Environment.NewLine +
 				"Ingredients: Nuts, Oats, Honey, Dried Berries", trailMix.GetDescription());
 		}

@@ -8,9 +8,15 @@ namespace Ama.CodeChallenge.Store.Store
 {
     public class OnlineStore : IStore
     {
+        protected internal const int OverWeightShippingCharge = 25;
+        protected internal const double FiveTentsDiscountAmount = 0.85D;
+        protected internal const int ShippingChargeThreshHold = 200;
+        protected internal const int OverWeightThreadHold = 10;
+
         // can be readonly as it's initialized inside constructor
         private readonly IInventory _inventory;
         private List<ShoppingCart.ShoppingCart> _carts;
+        protected internal const int DefaultShippingCharge = 20;
 
         public OnlineStore(IInventory inventory)
         {
@@ -39,56 +45,32 @@ namespace Ama.CodeChallenge.Store.Store
         public decimal CheckoutShoppingCart(string customerName)
         {
             ShoppingCart.ShoppingCart cart = GetCustomerShoppingCart(customerName);
-            var i = -1;
             double total = 0;
             var weight = 0M;
-            var fiveTentDiscount = 1.0D;
+            var fiveTentsDiscount = false;
 
-            for (i = 0; i < cart.Items.Count; ++i)
+            foreach (var item in cart.Items)
             {
-                var item = cart.Items[i];
-                if (item.ProductId == (int) ProductTypeEnum.Tent) //tent discount
-                {
-                    if (item.Count >= 5)
-                    {
-                        fiveTentDiscount = 0.85D;
-                        total = total + (double) item.Cost;
-                    }
-                    else if (item.Count >= 3)
-                    {
-                        total = total + (double) item.Cost * 0.85;
-                    }
-                    else
-                    {
-                        total = total + (double) item.Cost;
-                    }
-                }
-                else
-                {
-                    total = total + (double) item.Cost;
-                }
-            }
+                fiveTentsDiscount =
+                    fiveTentsDiscount || item.ProductId == (int) ProductTypeEnum.Tent && item.Count >= 5;
+                bool threeTentsDiscount =
+                    item.ProductId == (int) ProductTypeEnum.Tent && item.Count >= 3 && item.Count < 5;
 
-            // apply 5 tent discount, applies to any item
-            total = total * fiveTentDiscount;
+                total += threeTentsDiscount ? (double) item.Cost * 0.85 : (double) item.Cost;
 
-            for (i = 0; i < cart.Items.Count; ++i)
-            {
-                var item = cart.Items[i];
+                // calculate weight
                 var product = _inventory.GetProductByType((ProductTypeEnum) item.ProductId);
                 weight += item.Count * product.Weight;
             }
 
-            if (total < 200) //$20 shipping charge is < $200
-            {
-                total += 20;
-            }
+            // apply 5 tent discount, applies to all items
+            total *= fiveTentsDiscount ? FiveTentsDiscountAmount : 1.0D;
 
-            if (weight > 10) //overweight shipping charge
-            {
-                total += 25;
-            }
+            //$20 shipping charge is < $200
+            total += total < ShippingChargeThreshHold ? DefaultShippingCharge : 0;
 
+            //10kg $25 overweight shipping charge
+            total += weight > OverWeightThreadHold ? OverWeightShippingCharge : 0;
 
             return (decimal) total; // Subtotal
         }
@@ -100,7 +82,7 @@ namespace Ama.CodeChallenge.Store.Store
         }
 
         /// <inheritdoc />
-            public void CreateShoppingCart(string customerName)
+        public void CreateShoppingCart(string customerName)
         {
             _carts = new List<ShoppingCart.ShoppingCart> {new ShoppingCart.ShoppingCart {CustomerName = customerName}};
         }
