@@ -10,6 +10,7 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void AddItemToCart()
 		{
+			var catalog = new Catalog();
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
 			store.AddItemToShoppingCart("Test", ProductTypeEnum.Tent, 10);
@@ -19,6 +20,7 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void CheckoutCart_NoOverweight()
 		{
+			var catalog = new Catalog();
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
 			store.AddItemToShoppingCart("Test", ProductTypeEnum.Tent, 10);
@@ -29,6 +31,7 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void CheckoutCart_Overweight()
 		{
+			var catalog = new Catalog();
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
 			store.AddItemToShoppingCart("Test", ProductTypeEnum.Tent, 10);

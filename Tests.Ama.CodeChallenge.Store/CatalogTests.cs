@@ -1,4 +1,6 @@
-﻿using Ama.CodeChallenge.Store.Product;
+﻿using System;
+using Ama.CodeChallenge.Store;
+using Ama.CodeChallenge.Store.Product;
 using Ama.CodeChallenge.Store.Product.Camping;
 using Ama.CodeChallenge.Store.Store;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,19 +11,19 @@ namespace Tests.Ama.CodeChallenge.Store
 	public class CatalogTests
 	{
 		[TestMethod]
-		public void GetProductByProductType_Test()		
+		public void GetProductById()		
 		{
 			var catalog = new Catalog();
 			var product = catalog.GetProductByType(ProductTypeEnum.Tent);
 			Assert.IsNotNull(product);
-			Assert.AreEqual(ProductTypeEnum.Tent, product.ProductType);
+			Assert.AreEqual(1, product.Id);
 			Assert.AreEqual(typeof(Tent), product.GetType());
 			Assert.AreEqual(50M, product.Cost);
 			Assert.AreEqual(2.5M, product.Weight);
 		}
-
+            
 		[TestMethod]
-		public void UpdateProductInventory_Test()
+		public void UpdateProductInventory()
 		{
 			var catalog = new Catalog();
 			var product = catalog.GetProductByType(ProductTypeEnum.Tent);

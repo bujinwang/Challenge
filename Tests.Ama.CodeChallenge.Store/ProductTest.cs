@@ -11,8 +11,8 @@ namespace Tests.Ama.CodeChallenge.Store
 		[TestMethod]
 		public void GetDescriptionOfSleepingBag()
 		{
-			var sleepingBag = new SleepingBag(0);
-			Assert.AreEqual(": Soft and fluffy sleeping bag", sleepingBag.GetDescription());
+			var sleepingBag = new SleepingBag("Nice sleeping bad", 20M,0, 1M);
+			Assert.AreEqual(sleepingBag.Name +": Soft and fluffy sleeping bag", sleepingBag.GetDescription());
 
 			sleepingBag.Name = "Outdoor Research Kids Sleeping Bag";
 			Assert.AreEqual("Outdoor Research Kids Sleeping Bag: Soft and fluffy sleeping bag", sleepingBag.GetDescription());
@@ -21,9 +21,9 @@ namespace Tests.Ama.CodeChallenge.Store
 		
 
 		[TestMethod]
-		public void GetDescriptionOfTrailMix()
+		public void GetDescriptionofTrailMix()
 		{
-			var trailMix = new TrailMix(0);
+			var trailMix = new TrailMix("TrilMix", 20M, 0, 1.2M);
 			trailMix.Name = "Han-D Pack Trail Mix";
 			Assert.AreEqual(true, trailMix.ContainsAllergens);
 			Assert.AreEqual(false, trailMix.RequiresCooking);
