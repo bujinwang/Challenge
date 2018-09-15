@@ -21,16 +21,32 @@ namespace Tests.Ama.CodeChallenge.Store
 		
 
 		[TestMethod]
-		public void GetDescriptionofTrailMix()
+		public void GetDescriptionOfTrailMix()
 		{
-			var trailMix = new TrailMix("TrilMix", 20M, 0, 1.2M);
-			trailMix.Name = "Han-D Pack Trail Mix";
-			Assert.AreEqual(true, trailMix.ContainsAllergens);
+		    var trailMix = new TrailMix("Han-D Pack Trail Mix", 20M, 0, 1.2M);
+		    Assert.AreEqual(true, trailMix.ContainsAllergens);
 			Assert.AreEqual(false, trailMix.RequiresCooking);
 			Assert.AreEqual("Han-D Pack Trail Mix" + Environment.NewLine +
 				"Contains Allergens: False" + Environment.NewLine +
 				"Requires Cooking: False" + Environment.NewLine +
 				"Ingredients: Nuts, Oats, Honey, Dried Berries", trailMix.GetDescription());
 		}
-	}
+
+	    [TestMethod]
+	    public void SleepingBag_ToString()
+	    {
+	        var sleepingBag = new SleepingBag("Wonderful Sleeping bag", 20M, 0, 1.2M);
+	        Console.WriteLine(sleepingBag);
+	        Assert.AreEqual(sleepingBag.ToString(), sleepingBag.GetDescription());
+	    }
+	    [TestMethod]
+	    public void Description_Test()
+	    {
+	        var coffee = new Coffee(nameof(Coffee), 15M, 42, 0.5M);
+	        Console.WriteLine(coffee);
+
+            Assert.AreEqual(coffee.ToString(), coffee.GetDescription());
+	    }
+        
+    }
 }

@@ -113,5 +113,10 @@ namespace Ama.CodeChallenge.Store.Product
                 return _inventory;
             }
         }
+
+        public override string ToString()
+        {
+            return this.GetDescription();
+        }
     }
 }

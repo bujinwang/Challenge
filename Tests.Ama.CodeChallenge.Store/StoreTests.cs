@@ -47,6 +47,19 @@ namespace Tests.Ama.CodeChallenge.Store
         }
 
         [TestMethod]
+        public void AddItemToCart_MutipleCalls_Should_Total()
+        {
+            var store = new OnlineStore(new Inventory());
+            var customerName = "Test";
+            store.CreateShoppingCart(customerName);
+            store.AddItemToShoppingCart(customerName, ProductTypeEnum.Tent, 3);
+            store.AddItemToShoppingCart(customerName, ProductTypeEnum.Tent, 2);
+            Assert.AreEqual(5, store.GetItemCountInCart(customerName, ProductTypeEnum.Tent));
+            Assert.AreEqual(5* 50M, store.GetItemInCart(customerName, ProductTypeEnum.Tent).Cost);
+
+        }
+
+        [TestMethod]
         public void RemoveItemFromCart_ReturnsToInventory()
         {
             var store = new OnlineStore(new Inventory());
@@ -156,5 +169,42 @@ namespace Tests.Ama.CodeChallenge.Store
             // 5*2.5 = 12.5kg 'overweight, $25 overweight charge apply
             Assert.AreEqual((5 * 50M + 10 * 5M) * .85M + 25M, store.CheckoutShoppingCart(customerName));
         }
+
+        [TestMethod]
+        public void DropShoppingCart_Should_ZeroOutCart_RestoreInventory()
+        {
+            var store = new OnlineStore(new Inventory());
+            var customerName = "Test";
+            store.CreateShoppingCart(customerName);
+            var originalTotalInventory = Inventory.GetTotalProducts();
+            store.AddItemToShoppingCart(customerName, ProductTypeEnum.Tent, 3);
+            
+            Assert.AreEqual(originalTotalInventory-3, Inventory.GetTotalProducts());
+            store.AddItemToShoppingCart(customerName, ProductTypeEnum.Backpack, 2);
+            Assert.AreEqual(originalTotalInventory - 3 -2 , Inventory.GetTotalProducts());
+
+            Assert.AreEqual(3, store.GetItemCountInCart(customerName, ProductTypeEnum.Tent));
+            Assert.AreEqual(2, store.GetItemCountInCart(customerName, ProductTypeEnum.Backpack));
+
+            store.DropShoppingCart(customerName);
+            Assert.AreEqual(store.GetItemCountInCart(customerName, ProductTypeEnum.Tent), 0);
+            Assert.AreEqual(store.GetItemCountInCart(customerName, ProductTypeEnum.Backpack), 0);
+            // total inventory changed back
+            Assert.AreEqual(originalTotalInventory, Inventory.GetTotalProducts());
+        }
+
+
+        [TestMethod]
+        public void CheckoutCart_Detailed()
+        {
+            var store = new OnlineStore(new Inventory());
+            store.CreateShoppingCart("Test");
+            // 11*1 = 11kg overweight, $25 overweight charge applies
+            store.AddItemToShoppingCart("Test", ProductTypeEnum.Stove, 3); //$120
+
+            Assert.AreEqual(3, store.GetItemCountInCart("Test", ProductTypeEnum.Stove));
+            Assert.AreEqual(120M + 20M, store.CheckoutShoppingCart("Test")); // price = $120+$20
+        }
+
     }
 }

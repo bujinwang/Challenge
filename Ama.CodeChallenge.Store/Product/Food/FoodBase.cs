@@ -8,7 +8,7 @@ namespace Ama.CodeChallenge.Store.Product.Food
         public bool RequiresCooking { get; set; }
         public string Ingredients { get; set; }
 
-        public FoodBase(string name, decimal cost, int initialInventory, decimal weight) 
+        protected FoodBase(string name, decimal cost, int initialInventory, decimal weight)
             : base(name, cost, initialInventory, weight)
         {
         }
@@ -21,7 +21,8 @@ namespace Ama.CodeChallenge.Store.Product.Food
         public override string GetDescription()
         {
             return Name + Environment.NewLine +
-                   "Contains Allergens: " + false + Environment.NewLine +
+                   "Contains Allergens: " + this.ContainsAllergens + //Bug: use contains allergens in
+                   Environment.NewLine +
                    "Requires Cooking: " + RequiresCooking + Environment.NewLine +
                    "Ingredients: " + Ingredients;
         }

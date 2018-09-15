@@ -48,5 +48,6 @@ namespace Ama.CodeChallenge.Store.Store
         int GetItemCountInCart(string customerName, ProductTypeEnum productType);
 
         // Implement empty cart
+        void DropShoppingCart(string customer);
     }
 }

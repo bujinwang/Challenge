@@ -24,11 +24,14 @@ namespace Ama.CodeChallenge.Store.Store
 
             var shoppingCartItem = GetCustomerShoppingCartItem(productType, cart);
 
-            shoppingCartItem = CreateCustomerShoppingCartItem(productType, shoppingCartItem, cart);
+            if (shoppingCartItem == null)
+            {
+                shoppingCartItem = CreateCustomerShoppingCartItem(productType, cart);
+            }
 
             var product = _inventory.GetProductByType(productType);
-            shoppingCartItem.Count = count;
-            shoppingCartItem.Cost = count * product.Cost;
+            shoppingCartItem.Count += count;
+            shoppingCartItem.Cost = shoppingCartItem.Count * product.Cost;
             _inventory.ModifyProductInventory(productType, -count);
         }
 
@@ -90,8 +93,14 @@ namespace Ama.CodeChallenge.Store.Store
             return (decimal) total; // Subtotal
         }
 
+
+        public decimal CheckoutShoppingCart(string customerName, bool detialed)
+        {
+            return 0;
+        }
+
         /// <inheritdoc />
-        public void CreateShoppingCart(string customerName)
+            public void CreateShoppingCart(string customerName)
         {
             _carts = new List<ShoppingCart.ShoppingCart> {new ShoppingCart.ShoppingCart {CustomerName = customerName}};
         }
@@ -99,9 +108,21 @@ namespace Ama.CodeChallenge.Store.Store
         /// <inheritdoc />
         public int GetItemCountInCart(string customerName, ProductTypeEnum productType)
         {
-            ShoppingCart.ShoppingCart cart = GetCustomerShoppingCart(customerName);
+            var count = 0;
+            var item = GetItemInCart(customerName, productType);
+            if (item != null)
+                count = item.Count;
+            return count;
+        }
 
-            return cart.Items.Where(x => x.ProductId == (int) productType).First().Count;
+        public ShoppingCartItem GetItemInCart(string customerName, ProductTypeEnum productType)
+        {
+            ShoppingCartItem ret = null;
+
+            var cart = GetCustomerShoppingCart(customerName);
+            if (cart != null)
+                ret = cart.Items.FirstOrDefault(x => x.ProductId == (int) productType);
+            return ret;
         }
 
         /// <inheritdoc />
@@ -130,14 +151,11 @@ namespace Ama.CodeChallenge.Store.Store
         }
 
         private static ShoppingCartItem CreateCustomerShoppingCartItem(ProductTypeEnum productType,
-            ShoppingCartItem shoppingCartItem, ShoppingCart.ShoppingCart cart)
+            ShoppingCart.ShoppingCart cart)
         {
-            if (shoppingCartItem == null)
-            {
-                shoppingCartItem = new ShoppingCartItem();
-                shoppingCartItem.ProductId = (int) productType;
-                cart.Items.Add(shoppingCartItem);
-            }
+            ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+            shoppingCartItem.ProductId = (int) productType;
+            cart.Items.Add(shoppingCartItem);
 
             return shoppingCartItem;
         }
@@ -163,11 +181,13 @@ namespace Ama.CodeChallenge.Store.Store
         {
             ShoppingCart.ShoppingCart cart = null;
             for (var i = 0; i < _carts.Count; ++i)
+            {
                 if (_carts[i].CustomerName == customerName)
                 {
                     cart = _carts[i];
                     break;
                 }
+            }
 
             return cart;
         }
@@ -175,6 +195,21 @@ namespace Ama.CodeChallenge.Store.Store
         public int CheckInventory(ProductTypeEnum productTypeEnum)
         {
             return _inventory.GetCurrentProductInventory(productTypeEnum);
+        }
+
+        public void DropShoppingCart(string customerName)
+        {
+            var cart = GetCustomerShoppingCart(customerName);
+            foreach (var shoppingCartItem in cart.Items)
+            {
+                var productType = (ProductTypeEnum) shoppingCartItem.ProductId;
+                int count = shoppingCartItem.Count;
+                shoppingCartItem.Count -= count;
+                shoppingCartItem.Cost = 0.0M;
+                _inventory.ModifyProductInventory(productType, count);
+            }
+
+            cart.Items.Clear();
         }
     }
 }
