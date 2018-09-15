@@ -6,7 +6,6 @@
             : base(name, cost, initialInventory, weight)
         {
             ProductType = ProductTypeEnum.DehydratedMeal;
-            Cost = 12M;
             ContainsAllergens = true;
             Ingredients = "Noodles, Marinara Sauce, Ground Beef, Peanuts";
         }

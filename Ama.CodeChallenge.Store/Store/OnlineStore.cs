@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ama.CodeChallenge.Store.Product;
 using Ama.CodeChallenge.Store.ShoppingCart;
@@ -38,23 +39,35 @@ namespace Ama.CodeChallenge.Store.Store
             var i = -1;
             double total = 0;
             var weight = 0M;
-
+            var fiveTentDiscount = 1.0D;
 
             for (i = 0; i < cart.Items.Count; ++i)
             {
                 var item = cart.Items[i];
-                if (item.ProductId == (int) ProductTypeEnum.Tent)
+                if (item.ProductId == (int) ProductTypeEnum.Tent) //tent discount
                 {
-                    if (item.Count >= 3)
-                        total = total + (double) item.Cost * 0.15;
-                    else
+                    if (item.Count >= 5)
+                    {
+                        fiveTentDiscount = 0.85D;
                         total = total + (double) item.Cost;
+                    }
+                    else if (item.Count >= 3)
+                    {
+                        total = total + (double) item.Cost * 0.85;
+                    }
+                    else
+                    {
+                        total = total + (double) item.Cost;
+                    }
                 }
                 else
                 {
                     total = total + (double) item.Cost;
                 }
             }
+
+            // apply 5 tent discount, applies to any item
+            total = total * fiveTentDiscount;
 
             for (i = 0; i < cart.Items.Count; ++i)
             {
@@ -63,7 +76,18 @@ namespace Ama.CodeChallenge.Store.Store
                 weight += item.Count * product.Weight;
             }
 
-            return (decimal) total + 20; // Subtotal, plus shipping charge
+            if (total < 200) //$20 shipping charge is < $200
+            {
+                total += 20;
+            }
+
+            if (weight > 10) //overweight shipping charge
+            {
+                total += 25;
+            }
+
+
+            return (decimal) total; // Subtotal
         }
 
         /// <inheritdoc />
@@ -91,13 +115,16 @@ namespace Ama.CodeChallenge.Store.Store
                 if (item.ProductId == (int) productType)
                 {
                     if (item.Count >= count)
+                    {
                         item.Count = item.Count - count;
+                        // defect fixed, modify takes the changing count, not the total amount
+                        _inventory.ModifyProductInventory((ProductTypeEnum) item.ProductId, count);
+                    }
                     else
-                        item.Count = 0;
-
-                    //                    var productInventory = _inventory.GetCurrentProductInventory((ProductTypeEnum) item.ProductId);
-                    // defect fixed, modify takes the changing count, not the total amount
-                    _inventory.ModifyProductInventory((ProductTypeEnum) item.ProductId, count);
+                    {
+                        throw new InvalidOperationException(
+                            $"Remove count{count} is more than the existing count {item.Count} from shopping cart");
+                    }
                 }
             }
         }
