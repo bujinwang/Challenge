@@ -1,5 +1,4 @@
-﻿using Ama.CodeChallenge.Store;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Ama.CodeChallenge.Store.Product.Camping;
 using Ama.CodeChallenge.Store.Product.Food;

@@ -1,4 +1,4 @@
-﻿using Ama.CodeChallenge.Store;
+﻿using Ama.CodeChallenge.Store.Product;
 using Ama.CodeChallenge.Store.Store;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,8 +12,8 @@ namespace Tests.Ama.CodeChallenge.Store
 		{
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
-			store.AddItemToShoppingCart("Test", 1, 10);
-			Assert.AreEqual(10, store.GetItemCountInCart("Test", 1));
+			store.AddItemToShoppingCart("Test", ProductTypeEnum.Tent, 10);
+			Assert.AreEqual(10, store.GetItemCountInCart("Test", ProductTypeEnum.Tent));
 		}
 
 		[TestMethod]
@@ -21,8 +21,8 @@ namespace Tests.Ama.CodeChallenge.Store
 		{
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
-			store.AddItemToShoppingCart("Test", 1, 10);
-			Assert.AreEqual(10, store.GetItemCountInCart("Test", 1));
+			store.AddItemToShoppingCart("Test", ProductTypeEnum.Tent, 10);
+			Assert.AreEqual(10, store.GetItemCountInCart("Test", ProductTypeEnum.Tent));
 			Assert.AreEqual(95, store.CheckoutShoppingCart("Test"));
 		}
 
@@ -31,8 +31,8 @@ namespace Tests.Ama.CodeChallenge.Store
 		{
 			var store = new OnlineStore(new Catalog());
 			store.CreateShoppingCart("Test");
-			store.AddItemToShoppingCart("Test", 1, 10);
-			Assert.AreEqual(10, store.GetItemCountInCart("Test", 1));
+			store.AddItemToShoppingCart("Test", ProductTypeEnum.Tent, 10);
+			Assert.AreEqual(10, store.GetItemCountInCart("Test", ProductTypeEnum.Tent));
 			Assert.AreEqual(95, store.CheckoutShoppingCart("Test"));
 		}
 	}
