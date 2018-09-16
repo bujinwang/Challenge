@@ -7,14 +7,15 @@ using Ama.CodeChallenge.Store.Product.Food;
 
 namespace Ama.CodeChallenge.Store.Store
 {
-    public class Inventory : IInventory
+    public class Catalog : ICatalog
     {
         private static List<ProductBase> _products;
 
-        public Inventory()
+        public Catalog()
         {
             _products = new List<ProductBase>
             {
+                // Name, Cost, inventory, weight are all externalized t allow for max flexibility
                 new SleepingBag("Warming sleeping bag", 25M, 3, 0.67M),
                 new Tent("Yellow Tent", 50M, 9, 2.5M),
                 new Backpack("Amazing backpack", 30.0M, 7, 0.5M),
@@ -46,20 +47,12 @@ namespace Ama.CodeChallenge.Store.Store
         {
             lock (_products)
             {
-                foreach (var product in _products)
-                {
-                    if (product.ProductType == productType)
-                    {
-                        if (count < 0)
-                        {
-                            product.RemoveInventory(Math.Abs(count));
-                        }
-                        else
-                        {
-                            product.AddInventory(Math.Abs(count));
-                        }
-                    }
-                }
+                var product = _products.First(a => a.ProductType == productType);
+
+                if (count < 0)
+                    product?.RemoveInventory(Math.Abs(count));
+                else
+                    product?.AddInventory(Math.Abs(count));
             }
         }
 
@@ -67,11 +60,8 @@ namespace Ama.CodeChallenge.Store.Store
         {
             lock (_products)
             {
-                int total = 0;
-                foreach (var product in _products)
-                {
-                    total += product.GetInventory();
-                }
+                var total = 0;
+                foreach (var product in _products) total += product.GetInventory();
 
                 return total;
             }

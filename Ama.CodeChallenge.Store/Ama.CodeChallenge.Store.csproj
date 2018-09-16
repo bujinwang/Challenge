@@ -37,12 +37,12 @@
   <ItemGroup>
     <Compile Include="Product\Camping\Backpack.cs" />
     <Compile Include="Product\ProductTypeEnum.cs" />
-    <Compile Include="Store\Inventory.cs" />
+    <Compile Include="Store\Catalog.cs" />
     <Compile Include="Product\Food\Coffee.cs" />
     <Compile Include="Product\Food\DehydratedMeal.cs" />
     <Compile Include="Product\Food\FoodBase.cs" />
     <Compile Include="Product\Food\GranolaBar.cs" />
-    <Compile Include="Store\IInventory.cs" />
+    <Compile Include="Store\ICatalog.cs" />
     <Compile Include="Product\ProductBase.cs" />
     <Compile Include="Product\Camping\SleepingBag.cs" />
     <Compile Include="ShoppingCart\ShoppingCart.cs" />

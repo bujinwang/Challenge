@@ -2,11 +2,10 @@
 {
     public class SleepingBag : ProductBase
     {
-        public SleepingBag(string name, decimal cost, int initialInventory, decimal weight) 
+        public SleepingBag(string name, decimal cost, int initialInventory, decimal weight)
             : base(name, cost, initialInventory, weight)
         {
             ProductType = ProductTypeEnum.SleepingBag;
-           
         }
 
         public override string GetDescription()

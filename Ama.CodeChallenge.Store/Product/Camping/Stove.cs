@@ -2,7 +2,7 @@
 {
     public class Stove : ProductBase
     {
-        public Stove(string name, decimal cost, int initialInventory, decimal weight) 
+        public Stove(string name, decimal cost, int initialInventory, decimal weight)
             : base(name, cost, initialInventory, weight)
         {
             ProductType = ProductTypeEnum.Stove;

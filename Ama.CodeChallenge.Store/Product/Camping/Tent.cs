@@ -2,7 +2,7 @@
 {
     public class Tent : ProductBase
     {
-        public Tent(string name, decimal cost, int initialInventory, decimal weight) 
+        public Tent(string name, decimal cost, int initialInventory, decimal weight)
             : base(name, cost, initialInventory, weight)
         {
             ProductType = ProductTypeEnum.Tent;

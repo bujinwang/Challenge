@@ -14,7 +14,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void Initialize_StoreInventory()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             Assert.AreEqual(store.CheckInventory(ProductTypeEnum.Tent), 9);
             Assert.AreEqual(store.CheckInventory(ProductTypeEnum.SleepingBag), 3);
             Assert.AreEqual(store.CheckInventory(ProductTypeEnum.Backpack), 7);
@@ -28,7 +28,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void Add_StoreInventory()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             Assert.AreEqual(store.CheckInventory(ProductTypeEnum.Tent), 9);
             Assert.AreEqual(store.CheckInventory(ProductTypeEnum.SleepingBag), 3);
         }
@@ -36,7 +36,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void AddItemToCart_TakeoutFromInventory()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             var customerName = CustomerName;
             store.CreateShoppingCart(customerName);
             bool hasInventory = store.CheckInventory(ProductTypeEnum.Tent) >= 10;
@@ -52,7 +52,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void AddItemToCart_MutipleCalls_Should_Total()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             var customerName = CustomerName;
             store.CreateShoppingCart(customerName);
             store.AddItemToShoppingCart(customerName, ProductTypeEnum.Tent, 3);
@@ -65,7 +65,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void RemoveItemFromCart_ReturnsToInventory()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             var customerName = CustomerName;
             store.CreateShoppingCart(customerName);
             bool hasInventory = store.CheckInventory(ProductTypeEnum.Tent) >= 5;
@@ -88,7 +88,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [ExpectedException(typeof(ArgumentException))]
         public void AddMoreItemsThanInventoryToCart_Expecting_Exception()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             const string customerName = CustomerName;
             store.CreateShoppingCart(customerName);
             store.AddItemToShoppingCart(customerName, ProductTypeEnum.Tent, 10); // only have 9 tents in the inventory
@@ -99,7 +99,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [ExpectedException(typeof(InvalidOperationException))]
         public void RemoveMoreItemsFromCart_Expecting_Exception()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             const string customerName = CustomerName;
             store.CreateShoppingCart(customerName);
             store.AddItemToShoppingCart(customerName, ProductTypeEnum.Tent, 8);
@@ -109,7 +109,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void CheckoutCart_Over200_Overweight()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             store.CreateShoppingCart(CustomerName);
             // 11*1 = 11kg overweight, $25 overweight charge applies
             store.AddItemToShoppingCart(CustomerName, ProductTypeEnum.Stove, 11);
@@ -121,7 +121,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void CheckoutCart_LessThan200_Overweight()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             store.CreateShoppingCart(CustomerName);
             // 11*1 = 11kg overweight, $25 overweight charge applies, price is $55, less than $200
             store.AddItemToShoppingCart(CustomerName, ProductTypeEnum.DehydratedMeal, 11);
@@ -134,7 +134,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void CheckoutCart_LessThan200_DefaultShippingCost()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             store.CreateShoppingCart(CustomerName);
             // 11*1 = 11kg overweight, $25 overweight charge applies
             store.AddItemToShoppingCart(CustomerName, ProductTypeEnum.Stove, 3); //$120
@@ -147,7 +147,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void CheckoutCart_Over200_WaiveShippingCost_OverweightNotApply()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             const string customerName = CustomerName;
             store.CreateShoppingCart(customerName);
             // 6*1 = 6kg not overweight, $25 overweight charge not appluy
@@ -160,7 +160,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void CheckoutCart_Over3Tents_15PercentDiscount()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             const string customerName = CustomerName;
             store.CreateShoppingCart(customerName);
 
@@ -177,15 +177,15 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void DropShoppingCart_Should_ZeroOutCart_RestoreInventory()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             var customerName = CustomerName;
             store.CreateShoppingCart(customerName);
-            var originalTotalInventory = Inventory.GetTotalProducts();
+            var originalTotalInventory = Catalog.GetTotalProducts();
             store.AddItemToShoppingCart(customerName, ProductTypeEnum.Tent, 3);
             
-            Assert.AreEqual(originalTotalInventory-3, Inventory.GetTotalProducts());
+            Assert.AreEqual(originalTotalInventory-3, Catalog.GetTotalProducts());
             store.AddItemToShoppingCart(customerName, ProductTypeEnum.Backpack, 2);
-            Assert.AreEqual(originalTotalInventory - 3 -2 , Inventory.GetTotalProducts());
+            Assert.AreEqual(originalTotalInventory - 3 -2 , Catalog.GetTotalProducts());
 
             Assert.AreEqual(3, store.GetItemCountInCart(customerName, ProductTypeEnum.Tent));
             Assert.AreEqual(2, store.GetItemCountInCart(customerName, ProductTypeEnum.Backpack));
@@ -194,14 +194,14 @@ namespace Tests.Ama.CodeChallenge.Store
             Assert.AreEqual(store.GetItemCountInCart(customerName, ProductTypeEnum.Tent), 0);
             Assert.AreEqual(store.GetItemCountInCart(customerName, ProductTypeEnum.Backpack), 0);
             // total inventory changed back
-            Assert.AreEqual(originalTotalInventory, Inventory.GetTotalProducts());
+            Assert.AreEqual(originalTotalInventory, Catalog.GetTotalProducts());
         }
 
 
         [TestMethod]
         public void CheckoutCart_Detailed()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             const string customerName = CustomerName;
             store.CreateShoppingCart(customerName);
             // 11*1 = 11kg overweight, $25 overweight charge applies
@@ -220,7 +220,7 @@ namespace Tests.Ama.CodeChallenge.Store
         [TestMethod]
         public void NewCheckoutCart_Over5Tents_15PercentDiscount()
         {
-            var store = new OnlineStore(new Inventory());
+            var store = new OnlineStore(new Catalog());
             const string customerName = CustomerName;
             store.CreateShoppingCart(customerName);
 

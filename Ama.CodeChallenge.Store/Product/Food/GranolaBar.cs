@@ -2,7 +2,7 @@
 {
     public class GranolaBar : FoodBase
     {
-        public GranolaBar(string name, decimal cost, int initialInventory, decimal weight) 
+        public GranolaBar(string name, decimal cost, int initialInventory, decimal weight)
             : base(name, cost, initialInventory, weight)
         {
             ProductType = ProductTypeEnum.GranolaBar;

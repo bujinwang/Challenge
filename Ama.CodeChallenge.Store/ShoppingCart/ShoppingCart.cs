@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ama.CodeChallenge.Store.ShoppingCart
 {
@@ -17,7 +18,7 @@ namespace Ama.CodeChallenge.Store.ShoppingCart
         public decimal Total
         {
             get => SubTotal + ShippingFees;
-            set => throw new System.NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         public decimal Discounts { get; set; }

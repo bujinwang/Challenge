@@ -1,7 +1,7 @@
 ﻿namespace Ama.CodeChallenge.Store.ShoppingCart
 {
     /// <summary>
-    /// This class cannot change.
+    ///     This class cannot change.
     /// </summary>
     public class ShoppingCartItem
     {

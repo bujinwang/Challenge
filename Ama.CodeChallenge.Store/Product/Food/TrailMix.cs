@@ -2,7 +2,7 @@
 {
     public class TrailMix : FoodBase
     {
-        public TrailMix(string name, decimal cost, int initialInventory, decimal weight) 
+        public TrailMix(string name, decimal cost, int initialInventory, decimal weight)
             : base(name, cost, initialInventory, weight)
         {
             ProductType = ProductTypeEnum.TrailMix;
